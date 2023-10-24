@@ -1,6 +1,8 @@
 import { useParams } from "react-router-dom"
 import posts from "json/posts.json";
 import PostModelo from "componentes/PostModelo";
+import ReactMarkdowm from "react-markdown";
+import './Post.css';
 
 export default function Post() {
     const parametros = useParams()
@@ -15,7 +17,11 @@ export default function Post() {
             fotoCapa={`/assets/posts/${post.id}/capa.png`}
             titulo={post.titulo}
         >
-            Texto...
+            <div className="post-markdown-container">
+                <ReactMarkdowm>
+                    {post.texto}
+                </ReactMarkdowm>
+            </div>
         </PostModelo>
     )
 }
