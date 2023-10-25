@@ -1,10 +1,12 @@
-import { Route, Routes, useParams } from "react-router-dom"
+import styles from './Post.module.css';
+import { Route, Routes, useParams } from "react-router-dom";
 import posts from "json/posts.json";
 import PostModelo from "componentes/PostModelo";
 import ReactMarkdowm from "react-markdown";
 import './Post.css';
 import NaoEncontrada from "paginas/NaoEncontrada";
 import PaginaPadrao from "componentes/PaginaPadrao";
+import PostCard from 'componentes/PostCard';
 
 export default function Post() {
     const parametros = useParams()
@@ -17,6 +19,10 @@ export default function Post() {
         return <NaoEncontrada />
     }
 
+    const postsRecomendados = posts
+        .filter((post) => post.id !== Number(parametros.id))
+        .sort((a,b) => b.id - a.id)
+        .slice(0, 4);
 
     return (
         <Routes>
@@ -31,6 +37,16 @@ export default function Post() {
                                 {post.texto}
                             </ReactMarkdowm>
                         </div>
+
+                        <h2 className={styles.tituloOutrosPosts}>Outros posts que você pode gostar</h2>
+
+                        <ul className={styles.postsRecomendados}>
+                            {postsRecomendados.map((post) => (
+                                <li key={post.id}>
+                                    <PostCard post={post} />
+                                </li>
+                            ))}
+                        </ul>
                     </PostModelo>
                 } />
             </Route>
